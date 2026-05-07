@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>စာလုံး စက်ဂိမ်း - African Buffalo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Mobile Frame Container */
+        .app-container {
+            width: 100%;
+            max-width: 420px; /* Standard Mobile Width */
+            height: 100vh;
+            background: radial-gradient(circle, #3d1b02 0%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        .logo-container {
+            animation: pulse-gold 2s infinite ease-in-out;
+        }
+        @keyframes pulse-gold {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 191, 0, 0.4)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 191, 0, 0.7)); }
+        }
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .custom-gradient-btn {
+            background: linear-gradient(to bottom, #fcd34d 0%, #b45309 100%);
+            border-bottom: 4px solid #78350f;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .custom-gradient-btn:active {
+            border-bottom: 0px solid #78350f;
+            transform: translateY(4px);
+        }
+        .letter-btn {
+            background: linear-gradient(145deg, #ffffff, #e5e7eb);
+            box-shadow: 0 4px 0 #9ca3af;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .letter-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #9ca3af;
+        }
+        .page-transition {
+            transition: all 0.4s ease;
+        }
+        /* Hide scrollbars */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="pt-6 pb-2 text-center z-10">
+            <h1 class="text-2xl font-black tracking-tighter text-yellow-500 italic drop-shadow-lg">AFRICAN BUFFALO</h1>
+            <div id="game-stats" class="invisible flex justify-between mt-3 px-6 text-yellow-400 font-bold">
+                <div class="bg-black/40 px-3 py-1 rounded-full border border-yellow-600/20 text-xs">ရမှတ်: <span id="score-display">0</span></div>
+                <div class="bg-black/40 px-3 py-1 rounded-full border border-yellow-600/20 text-xs">အချိန်: <span id="timer-display">30</span></div>
+            </div>
+        </header>
+
+        <main class="flex-grow flex flex-col items-center justify-center p-6 relative">
+            
+            <!-- Start Page (Page 1) -->
+            <div id="page-start" class="page-transition w-full flex flex-col items-center">
+                <div class="logo-container mb-10 w-52 h-52">
+                    <img src="https://play-lh.googleusercontent.com/eNMCYkMvQRk2I5STuB6bEg8jkoAMEut88xz4Fq6kMWrXdT6gzNrUMa2Lg0D9NRPvuO3fHxB_9RSzP_ThqwvPaw=w480-h960-rw" 
+                         alt="Buffalo Logo" 
+                         class="w-full h-full object-cover rounded-[2rem] border-4 border-yellow-500 shadow-2xl">
+                </div>
+                <button onclick="goToGame()" class="px-10 py-3 custom-gradient-btn text-amber-950 font-black rounded-xl shadow-lg text-lg uppercase tracking-wider italic animate-bounce">
+                    START GAME 🎰
+                </button>
+            </div>
+
+            <!-- Game Page (Page 2) -->
+            <div id="page-game" class="page-transition hidden w-full flex flex-col items-center">
+                <div id="machine-body" class="bg-black/40 backdrop-blur-md p-6 rounded-[2rem] border border-yellow-600/20 shadow-2xl w-full">
+                    
+                    <div class="text-center mb-2">
+                        <span class="text-[9px] text-yellow-500 uppercase font-black tracking-[0.2em] opacity-80">Target Word</span>
+                    </div>
+                    
+                    <!-- Selected Letters Area -->
+                    <div id="word-input-area" class="min-h-[60px] bg-black/40 rounded-xl p-2 flex flex-wrap justify-center gap-1.5 border border-yellow-500/10 mb-6">
+                        <!-- User picks go here -->
+                    </div>
+
+                    <div class="text-center mb-3">
+                        <span class="text-[9px] text-yellow-200/40 uppercase font-black tracking-[0.2em]">Mixed Letters</span>
+                    </div>
+
+                    <!-- Shuffled Letters Area -->
+                    <div id="game-display" class="flex justify-center flex-wrap gap-2 mb-8">
+                        <!-- Buttons go here -->
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <button id="spin-next-btn" class="w-full custom-gradient-btn text-amber-950 font-black py-4 rounded-xl shadow-lg text-xl uppercase italic">
+                            SPIN 🎰
+                        </button>
+                        <button onclick="resetCurrentRound()" class="w-full bg-white/5 hover:bg-white/10 text-gray-400 py-2 rounded-lg text-xs font-bold transition-all">
+                            စာလုံးများ ပြန်စီမည်
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Popup -->
+            <div id="message-box" class="hidden absolute inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+                <div class="bg-gradient-to-b from-[#2d1606] to-[#000000] border border-yellow-500/50 p-8 rounded-[2.5rem] text-center w-full shadow-2xl">
+                    <div id="message-icon" class="text-6xl mb-4">🏆</div>
+                    <h2 id="message-title" class="text-2xl font-black mb-2 text-yellow-400">WINNER!</h2>
+                    <p id="message-text" class="mb-6 text-sm text-yellow-100/70"></p>
+                    <button onclick="closeMessage()" class="w-full custom-gradient-btn text-amber-950 py-3 rounded-xl font-black text-lg">CONTINUE</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="p-6 flex flex-col gap-3 items-center w-full z-10">
+            <div class="flex w-full gap-3">
+                <a href="https://t.me/yourlink" class="flex-1 flex items-center justify-center gap-2 bg-[#26A5E4] py-3.5 rounded-xl font-black shadow-lg text-[10px] tracking-widest uppercase active:scale-95 transition-transform">
+                    TELEGRAM
+                </a>
+                <a href="viber://chat?number=yournumber" class="flex-1 flex items-center justify-center gap-2 bg-[#7360F2] py-3.5 rounded-xl font-black shadow-lg text-[10px] tracking-widest uppercase active:scale-95 transition-transform">
+                    VIBER
+                </a>
+            </div>
+            <p class="text-[8px] text-yellow-600/40 uppercase tracking-[0.3em] font-bold mt-2">Buffalo Game v1.2</p>
+        </footer>
+    </div>
+
+    <script>
+        const words = ["BUFFALO", "AFRICA", "SAFARI", "POWER", "GOLDEN", "GRASS", "SAVANNA", "WILD"];
+        let currentWord = "";
+        let shuffledArray = [];
+        let userGuess = [];
+        let score = 0;
+        let timer = 30;
+        let gameActive = false;
+        let timerInterval;
+
+        const pageStart = document.getElementById('page-start');
+        const pageGame = document.getElementById('page-game');
+        const gameStats = document.getElementById('game-stats');
+        const gameDisplay = document.getElementById('game-display');
+        const inputArea = document.getElementById('word-input-area');
+        const scoreDisplay = document.getElementById('score-display');
+        const timerDisplay = document.getElementById('timer-display');
+        const messageBox = document.getElementById('message-box');
+        const machineBody = document.getElementById('machine-body');
+        const spinNextBtn = document.getElementById('spin-next-btn');
+
+        function goToGame() {
+            pageStart.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                pageStart.classList.add('hidden');
+                pageGame.classList.remove('hidden');
+                gameStats.classList.remove('invisible');
+                initRound();
+            }, 400);
+        }
+
+        function initRound() {
+            gameActive = true;
+            timer = 30;
+            userGuess = [];
+            inputArea.innerHTML = "";
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            shuffledArray = currentWord.split('').map((l, i) => ({letter: l, id: i}));
+            shuffledArray.sort(() => Math.random() - 0.5);
+            renderShuffledLetters();
+            startTimer();
+        }
+
+        function renderShuffledLetters() {
+            gameDisplay.innerHTML = "";
+            shuffledArray.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.className = "letter-btn w-10 h-11 text-amber-950 rounded-lg font-black text-xl flex items-center justify-center transition-all";
+                btn.innerText = item.letter;
+                btn.id = `btn-${index}`;
+                btn.onclick = () => selectLetter(item.letter, index);
+                gameDisplay.appendChild(btn);
+            });
+        }
+
+        function selectLetter(letter, index) {
+            if (!gameActive) return;
+            const btn = document.getElementById(`btn-${index}`);
+            if (btn.style.visibility === "hidden") return;
+
+            userGuess.push(letter);
+            btn.style.visibility = "hidden";
+            btn.style.pointerEvents = "none";
+            
+            const guessTag = document.createElement('div');
+            guessTag.className = "w-9 h-10 bg-yellow-500 text-amber-950 rounded-lg flex items-center justify-center font-black text-xl animate-bounce border-b-4 border-amber-700 shadow-sm";
+            guessTag.innerText = letter;
+            inputArea.appendChild(guessTag);
+
+            if (userGuess.length === currentWord.length) {
+                setTimeout(checkResult, 300);
+            }
+        }
+
+        function resetCurrentRound() {
+            userGuess = [];
+            inputArea.innerHTML = "";
+            const btns = gameDisplay.querySelectorAll('.letter-btn');
+            btns.forEach(btn => {
+                btn.style.visibility = "visible";
+                btn.style.pointerEvents = "auto";
+            });
+        }
+
+        function checkResult() {
+            gameActive = false;
+            clearInterval(timerInterval);
+            if (userGuess.join('') === currentWord) {
+                score += 100;
+                scoreDisplay.innerText = score;
+                showMessage("🏆", "အောင်မြင်ပါတယ်!", `${currentWord} ကို မှန်အောင် စီနိုင်ခဲ့ပါတယ်။ ရမှတ် ၁၀၀ ရရှိပါတယ်။`);
+            } else {
+                showMessage("❌", "မှားသွားပါပြီ!", `မှန်ကန်တဲ့ စကားလုံးက "${currentWord}" ဖြစ်ပါတယ်။`);
+            }
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.innerText = timer;
+            timerInterval = setInterval(() => {
+                timer--;
+                timerDisplay.innerText = timer;
+                if (timer <= 0) {
+                    gameActive = false;
+                    clearInterval(timerInterval);
+                    showMessage("⌛", "အချိန်ကုန်ပြီ!", "မြန်မြန်လေး စီပေးဖို့ လိုအပ်ပါတယ်။");
+                }
+            }, 1000);
+        }
+
+        function showMessage(icon, title, text) {
+            document.getElementById('message-icon').innerText = icon;
+            document.getElementById('message-title').innerText = title;
+            document.getElementById('message-text').innerText = text;
+            messageBox.classList.remove('hidden');
+        }
+
+        function closeMessage() {
+            messageBox.classList.add('hidden');
+            inputArea.innerHTML = "";
+            gameDisplay.innerHTML = `<div class="text-yellow-500 font-bold animate-pulse text-sm italic uppercase">SPIN ကိုနှိပ်ပါ</div>`;
+        }
+
+        spinNextBtn.onclick = () => {
+            machineBody.classList.add('shake');
+            gameDisplay.innerHTML = `<div class="text-4xl animate-spin">🎰</div>`;
+            setTimeout(() => {
+                machineBody.classList.remove('shake');
+                initRound();
+            }, 500);
+        };
+    </script>
+</body>
+</html>
