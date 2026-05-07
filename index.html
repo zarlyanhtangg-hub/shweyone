@@ -19,7 +19,7 @@
         /* Mobile Frame Container */
         .app-container {
             width: 100%;
-            max-width: 420px; /* Standard Mobile Width */
+            max-width: 420px;
             height: 100vh;
             background: radial-gradient(circle, #3d1b02 0%, #000000 100%);
             display: flex;
@@ -31,8 +31,8 @@
             animation: pulse-gold 2s infinite ease-in-out;
         }
         @keyframes pulse-gold {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 191, 0, 0.4)); }
-            50% { filter: drop-shadow(0 0 20px rgba(255, 191, 0, 0.7)); }
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 191, 0, 0.4)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 191, 0, 0.6)); }
         }
         .shake {
             animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
@@ -68,13 +68,30 @@
         ::-webkit-scrollbar {
             display: none;
         }
+        /* Fixed Marquee Styles */
+        .marquee-wrapper {
+            background: #f59e0b; /* Bright Amber for visibility */
+            color: #000;
+            padding: 10px 0;
+            font-weight: 900;
+            font-size: 14px;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
 <body>
 
     <div class="app-container">
+        <!-- Marquee Text Wrapper -->
+        <div class="marquee-wrapper">
+            <marquee scrollamount="6" behavior="scroll" direction="left">
+                အပေးများတဲ့ ကျွဲဂိမ်းများ ကစားလိုပါက အောက်ပါလင့်များမှ ဆက်သွယ်ပါ
+            </marquee>
+        </div>
+
         <!-- Header -->
-        <header class="pt-6 pb-2 text-center z-10">
+        <header class="pt-4 pb-2 text-center z-10">
             <h1 class="text-2xl font-black tracking-tighter text-yellow-500 italic drop-shadow-lg">AFRICAN BUFFALO</h1>
             <div id="game-stats" class="invisible flex justify-between mt-3 px-6 text-yellow-400 font-bold">
                 <div class="bg-black/40 px-3 py-1 rounded-full border border-yellow-600/20 text-xs">ရမှတ်: <span id="score-display">0</span></div>
@@ -86,10 +103,11 @@
             
             <!-- Start Page (Page 1) -->
             <div id="page-start" class="page-transition w-full flex flex-col items-center">
-                <div class="logo-container mb-10 w-52 h-52">
-                    <img src="https://play-lh.googleusercontent.com/eNMCYkMvQRk2I5STuB6bEg8jkoAMEut88xz4Fq6kMWrXdT6gzNrUMa2Lg0D9NRPvuO3fHxB_9RSzP_ThqwvPaw=w480-h960-rw" 
+                <div class="logo-container mb-8 w-40 h-40"> <!-- Smaller Logo -->
+                    <img src="image_e0ee2f.jpg" 
                          alt="Buffalo Logo" 
-                         class="w-full h-full object-cover rounded-[2rem] border-4 border-yellow-500 shadow-2xl">
+                         onerror="this.src='https://play-lh.googleusercontent.com/eNMCYkMvQRk2I5STuB6bEg8jkoAMEut88xz4Fq6kMWrXdT6gzNrUMa2Lg0D9NRPvuO3fHxB_9RSzP_ThqwvPaw=w480-h960-rw'"
+                         class="w-full h-full object-cover rounded-[1.5rem] border-4 border-yellow-500 shadow-2xl">
                 </div>
                 <button onclick="goToGame()" class="px-10 py-3 custom-gradient-btn text-amber-950 font-black rounded-xl shadow-lg text-lg uppercase tracking-wider italic animate-bounce">
                     START GAME 🎰
@@ -104,19 +122,13 @@
                         <span class="text-[9px] text-yellow-500 uppercase font-black tracking-[0.2em] opacity-80">Target Word</span>
                     </div>
                     
-                    <!-- Selected Letters Area -->
-                    <div id="word-input-area" class="min-h-[60px] bg-black/40 rounded-xl p-2 flex flex-wrap justify-center gap-1.5 border border-yellow-500/10 mb-6">
-                        <!-- User picks go here -->
-                    </div>
+                    <div id="word-input-area" class="min-h-[60px] bg-black/40 rounded-xl p-2 flex flex-wrap justify-center gap-1.5 border border-yellow-500/10 mb-6"></div>
 
                     <div class="text-center mb-3">
                         <span class="text-[9px] text-yellow-200/40 uppercase font-black tracking-[0.2em]">Mixed Letters</span>
                     </div>
 
-                    <!-- Shuffled Letters Area -->
-                    <div id="game-display" class="flex justify-center flex-wrap gap-2 mb-8">
-                        <!-- Buttons go here -->
-                    </div>
+                    <div id="game-display" class="flex justify-center flex-wrap gap-2 mb-8"></div>
 
                     <div class="flex flex-col gap-3">
                         <button id="spin-next-btn" class="w-full custom-gradient-btn text-amber-950 font-black py-4 rounded-xl shadow-lg text-xl uppercase italic">
@@ -142,15 +154,17 @@
 
         <!-- Footer -->
         <footer class="p-6 flex flex-col gap-3 items-center w-full z-10">
-            <div class="flex w-full gap-3">
-                <a href="https://t.me/yourlink" class="flex-1 flex items-center justify-center gap-2 bg-[#26A5E4] py-3.5 rounded-xl font-black shadow-lg text-[10px] tracking-widest uppercase active:scale-95 transition-transform">
-                    TELEGRAM
+            <div class="flex flex-col w-full gap-3">
+                <a href="https://t.me/yourlink" class="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#1d91c0] to-[#26A5E4] py-4 rounded-2xl font-bold shadow-lg text-sm tracking-wide active:scale-95 transition-transform border border-white/10">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.14-.28.28-.43.28l.192-2.73 4.97-4.49c.216-.192-.047-.3-.334-.11l-6.14 3.86-2.64-.825c-.574-.18-.585-.574.12-.853l10.33-3.98c.48-.18.9.11.734.95z"/></svg>
+                    Telegram မှ ဆက်သွယ်ရန်
                 </a>
-                <a href="viber://chat?number=yournumber" class="flex-1 flex items-center justify-center gap-2 bg-[#7360F2] py-3.5 rounded-xl font-black shadow-lg text-[10px] tracking-widest uppercase active:scale-95 transition-transform">
-                    VIBER
+                <a href="viber://chat?number=yournumber" class="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#5a48d1] to-[#7360F2] py-4 rounded-2xl font-bold shadow-lg text-sm tracking-wide active:scale-95 transition-transform border border-white/10">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.8 19.2c-4.3 0-7.8-3.5-7.8-7.8 0-4.3 3.5-7.8 7.8-7.8 4.3 0 7.8 3.5 7.8 7.8 0 4.3-3.5 7.8-7.8 7.8zm-2.4-11c-.4 0-.7.3-.7.7 0 .4.3.7.7.7.4 0 .7-.3.7-.7 0-.4-.3-.7-.7-.7zm4.8 6.4c-.4 0-.7.3-.7.7 0 .4.3.7.7.7.4 0 .7-.3.7-.7 0-.4-.3-.7-.7-.7z"/></svg>
+                    Viber မှ ဆက်သွယ်ရန်
                 </a>
             </div>
-            <p class="text-[8px] text-yellow-600/40 uppercase tracking-[0.3em] font-bold mt-2">Buffalo Game v1.2</p>
+            <p class="text-[8px] text-yellow-600/40 uppercase tracking-[0.3em] font-bold mt-2">Buffalo Game v1.4</p>
         </footer>
     </div>
 
